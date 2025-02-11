@@ -7,6 +7,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Configuration: Set to False if you want to disable automatic error handling
+AUTO_RETRY_ERRORS = True  
+MAX_RETRIES = 3  
+
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY_ENV"))
 MODEL = "gpt-3.5-turbo"
@@ -44,17 +48,30 @@ def is_command_safe(commands):
 def run_command(commands):
     """
     Executes each command in sequence using subprocess.
+    Returns output and error messages.
     """
+    all_output = ""
+    all_errors = ""
+    
     for cmd in commands:
         try:
             print(colored(f"\nRunning: {cmd}", "yellow", attrs=["bold"]))
             result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+            
             if result.stdout:
                 print(colored("Output:\n", "green") + result.stdout)
+                all_output += result.stdout
+
             if result.stderr:
                 print(colored("Errors:\n", "red") + result.stderr)
+                all_errors += result.stderr
+
         except Exception as e:
-            print(colored(f"Error executing command: {e}", "red", attrs=["bold"]))
+            error_msg = f"Error executing command: {e}"
+            print(colored(error_msg, "red", attrs=["bold"]))
+            all_errors += error_msg
+
+    return all_output.strip(), all_errors.strip()
 
 def interact_with_chatgpt(messages):
     """
@@ -74,34 +91,15 @@ def interact_with_chatgpt(messages):
 def main():
     print(colored("Welcome to your AI-powered CLI companion!", "green", attrs=["bold"]))
     print(colored("Type 'quit' or 'exit' to stop.", "yellow"))
+    print(colored(f"Automatic Error Handling: {'Enabled' if AUTO_RETRY_ERRORS else 'Disabled'}", "cyan"))
 
     # Start with an initial system message
     messages = [
         {
             "role": "system",
             "content": (
-                "You are a highly capable shell command generator that converts plain-English requests "
-                "into fully self-contained, executable shell commands for a Unix-like environment. "
-                "You must produce all necessary commands so that the user never needs to perform any manual steps. "
-                
-                "Completeness: Generate complete commands that include any prerequisite steps "
-                "(e.g., if a referenced folder does not exist, include a command such as `mkdir -p` to create it). "
-                
-                "Clarity & Safety: If the request is ambiguous, incomplete, or potentially dangerous "
-                "(e.g., commands that could result in data loss or system instability), ask for clarification before proceeding. "
-                
-                "No Placeholders: Do not use placeholders like `/path/to/folder` or `<argument>`. "
-                "All paths and arguments must be explicitly specified. "
-                
-                "Formatting: Output only the final command(s) without any extra commentary, "
-                "markdown formatting, code fences, or additional text. "
-                
-                "Multiple Commands: If more than one command is required, list each command on a separate line in the correct execution order. "
-                
-                "Edge Cases: Always consider dependencies, file/directory existence, and command safety "
-                "(e.g., using flags for non-interactive execution if needed). "
-                
-                "Your response should consist solely of the final command(s) ready for execution."
+                "You are an AI that translates user requests into fully executable shell commands. "
+                "If an error occurs during execution, retry with an improved response up to three times."
             )
         }
     ]
@@ -115,7 +113,9 @@ def main():
         # Add the user's initial request to the conversation
         messages.append({"role": "user", "content": user_request})
 
-        while True:
+        retry_count = 0  # Track retries
+
+        while retry_count < MAX_RETRIES:
             # Interact with ChatGPT
             response = interact_with_chatgpt(messages)
             if not response:
@@ -127,7 +127,6 @@ def main():
             print(colored(response, "cyan"))
 
             if "?" in response or "clarification" in response.lower():
-                # If the AI is asking for clarification, get the user's input
                 clarification = input(colored("\nYour clarification: ", "blue")).strip()
                 messages.append({"role": "assistant", "content": response})
                 messages.append({"role": "user", "content": clarification})
@@ -147,7 +146,7 @@ def main():
             # Check for dangerous keywords
             if not is_command_safe(commands):
                 print(colored("WARNING: The command seems to contain potentially dangerous keywords.", "red", attrs=["bold"]))
-                confirm = input(colored("Are you absolutely sure you want to run this? (yes/no): ", "blue")).strip().lower()
+                confirm = input(colored("Are you sure you want to run this? (yes/no): ", "blue")).strip().lower()
                 if confirm != "yes":
                     print(colored("Command canceled.", "red", attrs=["bold"]))
                     break
@@ -155,10 +154,21 @@ def main():
             # Final confirmation
             proceed = input(colored("Do you want to run these commands? (y/n): ", "blue")).strip().lower()
             if proceed == 'y':
-                run_command(commands)
+                output, errors = run_command(commands)
+
+                if errors and AUTO_RETRY_ERRORS:
+                    retry_count += 1
+                    print(colored(f"\nRetrying... (Attempt {retry_count}/{MAX_RETRIES})", "yellow"))
+
+                    # Feed the error message back to ChatGPT
+                    messages.append({"role": "assistant", "content": response})
+                    messages.append({"role": "user", "content": f"The command failed with this error:\n{errors}\nPlease correct it and provide a new command."})
+                    continue  # Retry with AI-generated fix
+                else:
+                    break  # Exit retry loop if no errors
             else:
                 print(colored("Command execution canceled.", "red"))
-            break  # Exit the clarification loop
+                break  # Exit loop
 
 if __name__ == "__main__":
     main()
