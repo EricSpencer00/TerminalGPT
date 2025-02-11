@@ -3,6 +3,9 @@ import re
 import subprocess
 from openai import OpenAI
 from termcolor import colored
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY_ENV"))
