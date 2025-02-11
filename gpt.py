@@ -15,14 +15,11 @@ if not client.api_key:
     print(colored("Error: OpenAI API Key is not set.", "red"))
     exit()
 
-<<<<<<< HEAD
 # Set the model (comment/uncomment to switch)
 # MODEL = "gpt-3.5-turbo"
 MODEL = "gpt-4"
 # MODEL = "gpt-4-turbo"
 
-=======
->>>>>>> 692694e (Initial commit)
 # Flag to handle termination
 terminate_request = False
 streaming_active = False
@@ -43,10 +40,7 @@ def chat_with_streaming():
     global terminate_request, streaming_active
     print(colored("Welcome to terminalGPT!", "green", attrs=["bold"]))
     print(colored("Type 'exit' to quit.", "yellow"))
-<<<<<<< HEAD
     print(colored(f"Using model: {MODEL}", "cyan"))
-=======
->>>>>>> 692694e (Initial commit)
 
     # Initialize conversation history
     conversation = []
@@ -77,11 +71,7 @@ def chat_with_streaming():
             # Stream GPT response
             print(colored("\nChatGPT: ", "cyan"), end="", flush=True)
             stream = client.chat.completions.create(
-<<<<<<< HEAD
                 model=MODEL,
-=======
-                model="gpt-4",  # Replace with your preferred model
->>>>>>> 692694e (Initial commit)
                 messages=conversation,
                 stream=True,
             )
