@@ -8,11 +8,9 @@ This repository contains two powerful terminal-based applications that integrate
 ## Table of Contents
 - [AI Shell Assistant](#ai-shell-assistant)
   - [Features](#features)
-  - [Installation](#installation)
   - [Usage](#usage)
 - [terminalGPT](#terminalgpt)
   - [Features](#features-1)
-  - [Installation](#installation-1)
   - [Usage](#usage-1)
 - [Environment Variables](#environment-variables)
 - [License](#license)
@@ -29,25 +27,11 @@ AI Shell Assistant is a CLI tool that converts natural language instructions int
 - Asks for confirmation before running potentially harmful operations.
 - Uses OpenAI's GPT model to generate shell commands.
 
-### Installation
-Ensure you have Python installed, then install dependencies:
-
-```sh
-pip install openai termcolor
-```
-
-Clone the repository:
-
-```sh
-git clone https://github.com/yourusername/repository.git
-cd repository
-```
-
 ### Usage
 Run the AI Shell Assistant:
 
 ```sh
-python ai_shell_assistant.py
+python exe.py
 ```
 
 Then enter your request in natural language, and it will suggest safe shell commands.
@@ -64,25 +48,11 @@ terminalGPT is an interactive chatbot that allows real-time conversations with O
 - Handles termination gracefully with Ctrl+C.
 - Maintains conversation history during the session.
 
-### Installation
-Install dependencies:
-
-```sh
-pip install openai termcolor python-dotenv
-```
-
-Clone the repository:
-
-```sh
-git clone https://github.com/yourusername/repository.git
-cd repository
-```
-
 ### Usage
 Run the chatbot:
 
 ```sh
-python terminalGPT.py
+python gpt.py
 ```
 
 Simply type your messages and get instant responses from GPT.
@@ -124,8 +94,8 @@ TerminalGPT is a command-line interface (CLI) application that allows you to int
 
 ### Clone the Repository:
 ```bash
-git clone <repository-url>
-cd <repository-directory>
+git clone https://github.com/EricSpencer00/TerminalGPT.git
+cd TerminalGPT
 ```
 
 ### Install the Required Packages:
