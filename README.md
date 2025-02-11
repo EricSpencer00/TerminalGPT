@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 # AI-Powered Terminal Tools
 
 This repository contains two powerful terminal-based applications that integrate with OpenAI's API:
@@ -206,4 +204,3 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 ---
 
 This README provides a comprehensive guide to setting up and using TerminalGPT, including creating an OpenAI API key and configuring environment variables.
->>>>>>> 692694e (Initial commit)
