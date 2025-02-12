@@ -1,176 +1,131 @@
 # AI-Powered Terminal Tools
 
-This repository contains two powerful terminal-based applications that integrate with OpenAI's API:
+This repository contains two terminal-based applications that integrate with OpenRouter's Deepseek model:
 
-1. **terminalGPT** - A ChatGPT-powered interactive terminal chatbot.
-2. **AI Shell Assistant** - An AI-assisted terminal application that translates natural language requests into shell commands and executes them safely.
+1. **TerminalGPT (gpt.py)** - An interactive chatbot that allows you to converse with an AI in your terminal.
+2. **AI Shell Assistant (exe.py)** - A tool that translates natural language requests into shell commands and executes them safely.
 
 ## Table of Contents
-- [AI Shell Assistant](#ai-shell-assistant)
-  - [Features](#features)
-  - [Usage](#usage)
-- [terminalGPT](#terminalgpt)
-  - [Features](#features-1)
-  - [Usage](#usage-1)
-- [Environment Variables](#environment-variables)
+
+- [Features](#features)
+- [Installation and Setup](#installation-and-setup)
+  - [Prerequisites](#prerequisites)
+  - [Cloning the Repository](#cloning-the-repository)
+  - [Setting Up the Python Environment](#setting-up-the-python-environment)
+  - [Installing Required Packages](#installing-required-packages)
+  - [Configuring the OpenRouter Deepseek Key](#configuring-the-openrouter-deepseek-key)
+- [Usage](#usage)
+  - [TerminalGPT (Chat Interface)](#terminalgpt-chat-interface)
+  - [AI Shell Assistant (Command Generator/Executor)](#ai-shell-assistant-command-generatorexecutor)
+- [Repository Structure](#repository-structure)
 - [License](#license)
 
----
+## Features
 
-## AI Shell Assistant
-
-AI Shell Assistant is a CLI tool that converts natural language instructions into shell commands. It ensures safety by filtering dangerous commands and requires user confirmation before execution.
-
-### Features
-- Converts plain-English requests into shell commands.
-- Ensures safe execution by sanitizing commands.
-- Asks for confirmation before running potentially harmful operations.
-- Uses OpenAI's GPT model to generate shell commands.
-
-### Usage
-Run the AI Shell Assistant:
-
-```sh
-python exe.py
-```
-
-Then enter your request in natural language, and it will suggest safe shell commands.
-
----
-
-## terminalGPT
-
-terminalGPT is an interactive chatbot that allows real-time conversations with OpenAI's models directly from your terminal.
-
-### Features
-- Provides a real-time chat experience in the terminal.
-- Supports streaming responses for smooth conversation.
-- Handles termination gracefully with Ctrl+C.
+### TerminalGPT (gpt.py)
+- Chat with an AI in real time from your terminal.
 - Maintains conversation history during the session.
 
-### Usage
-Run the chatbot:
+### AI Shell Assistant (exe.py)
+- Converts plain-English requests into complete, executable shell commands.
+- Sanitizes generated commands and prompts for confirmation before executing.
+- Automatically handles errors with a retry mechanism.
 
-```sh
-python gpt.py
-```
+## Installation and Setup
 
-Simply type your messages and get instant responses from GPT.
+These instructions are aimed at Mac users who are new to using the Terminal.
 
----
+### Prerequisites
+- macOS with **Python 3.6** or higher installed.
+- **Homebrew** package manager (if not installed, see below).
+- Basic familiarity with the Terminal application.
 
-## Environment Variables
+### 1. Install Homebrew (if not already installed)
+1. Open Safari and navigate to [https://brew.sh/](https://brew.sh/).
+2. Follow the instructions on the website to install Homebrew.
 
-Both applications require an OpenAI API key. Create a `.env` file in the project directory and add:
+### 2. Open the Terminal
+- Press `Cmd + Space`, type **Terminal**, and press `Enter`.
 
-```sh
-OPENAI_API_KEY_ENV=your_openai_api_key
-```
-
-Alternatively, export the key in your terminal session:
-
-```sh
-export OPENAI_API_KEY_ENV=your_openai_api_key
-```
-
----
-
-## License
-This project is open-source. You can modify and distribute it freely.
-
----
-
-Enjoy using AI in your terminal! 🚀
-=======
-# TerminalGPT
-
-TerminalGPT is a command-line interface (CLI) application that allows you to interact with OpenAI's GPT models. This tutorial provides instructions on how to set up and run the application, including creating an OpenAI API key and configuring environment variables.
-
-## Prerequisites
-- Python 3.6 or higher
-- pip (Python package installer)
-
-## Installation
-
-### Clone the Repository:
+### 3. Install Python 3
+In the Terminal, run:
 ```bash
-git clone https://github.com/EricSpencer00/TerminalGPT.git
+brew install python
+```
+This installs the latest version of Python 3 along with pip, Python's package installer.
+
+### 4. Clone the Repository
+Choose a directory (for example, your Desktop) and run:
+```bash
+cd ~/Desktop
+git clone https://github.com/YourUsername/TerminalGPT.git
 cd TerminalGPT
 ```
 
-### Install the Required Packages:
-```bash
-pip install -r requirements.txt
-```
-
-## Setting up an OpenAI API Key
-
-1. **Create an OpenAI API Key:**
-   - Go to the [OpenAI API Key page](https://platform.openai.com/api-keys) and sign up or log in.
-   - Navigate to the API keys section in your account settings.
-   - Create a new API key and copy it.
-
-2. **Store the API Key in an Environment Variable:**
-   - Create a `.env` file in the root directory of your project:
-     ```bash
-     touch .env
-     ```
-   - Open the `.env` file and add your API key:
-     ```bash
-     echo OPENAI_API_KEY_ENV="sk-proj..." >> .env
-     ```
-
-## Usage
-
-### 1. Set up your Python Environment:
+### 5. Set Up a Python Virtual Environment
+It is recommended to use a virtual environment:
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
+Your Terminal prompt should now start with `(venv)`.
 
-### 2. Install Necessary Packages:
+### 6. Install the Required Packages
+Install the dependencies using:
 ```bash
 pip install -r requirements.txt
 ```
+*If a `requirements.txt` file is not provided, you can create one with at least the following packages:*
+```
+openai
+python-dotenv
+termcolor
+```
 
-### 3. Run the Application:
+### 7. Configure the OpenRouter Deepseek Key
+Both applications require your Deepseek key from OpenRouter.
+1. In the project directory, create a file named `.env`:
+   ```bash
+   touch .env
+   ```
+2. Open the `.env` file in your preferred text editor (TextEdit, VS Code, etc.) and add:
+   ```bash
+   OPENROUTER_API_KEY=your_deepseek_key
+   ```
+   Replace `your_deepseek_key` with your actual key.
+3. Save the file.
+
+## Usage
+
+### TerminalGPT (Chat Interface)
+To start the chat interface, run:
 ```bash
 python gpt.py
 ```
+- You will see a welcome message.
+- Type your messages and press Enter to chat with the AI.
+- To exit, type `exit` or `quit`.
 
-### 4. Interact with TerminalGPT:
-- The application will prompt you to enter a message.
-- Type your message and press Enter.
-- Type `exit` to quit the application.
-
-## Example Interaction
-```plaintext
-$ python gpt.py
-Welcome to TerminalGPT!
-Type 'exit' to quit.
-
-You: Hello, how are you?
-ChatGPT: I'm an AI language model, so I don't have feelings, but I'm here to help you!
-
-You: exit
-Goodbye!
+### AI Shell Assistant (Command Generator/Executor)
+To run the shell command assistant, execute:
+```bash
+python exe.py
 ```
+- Enter your request in plain English (e.g., "Create a folder called myproject and navigate into it").
+- The assistant will generate complete shell commands, display them, and ask for your confirmation before executing.
+- Review the output and follow the prompts.
 
-## Code Overview
+## Repository Structure
 
-### `gpt.py`
-- This script initializes the OpenAI client using the API key from the `.env` file.
-- Provides a user-friendly CLI to interact with the GPT model.
-- Includes streaming functionality for real-time responses.
+```
+TerminalGPT/
+├── gpt.py               # TerminalGPT chatbot application
+├── exe.py               # AI Shell Assistant application
+├── requirements.txt     # Python dependenciesV
+├── .env                 # Environment file with OPENROUTER_API_KEY (not committed)
+└── README.md            # This documentation file
+```
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any changes.
-
----
-
-This README provides a comprehensive guide to setting up and using TerminalGPT, including creating an OpenAI API key and configuring environment variables.
+This project is open-source and available for modification and distribution. See the [LICENSE](LICENSE) file for details.
