@@ -11,11 +11,12 @@ load_dotenv()
 AUTO_RETRY_ERRORS = True  
 MAX_RETRIES = 3  
 
-# Initialize OpenAI client
+# Initialize OpenAI client using the new key and base URL (OpenRouter endpoint)
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=os.getenv("OPENROUTER_API_KEY")
 )
+
 MODEL = "deepseek/deepseek-chat:free"
 
 def sanitize_command(command):
@@ -78,10 +79,16 @@ def run_command(commands):
 
 def interact_with_chatgpt(messages):
     """
-    Sends the conversation history to the OpenAI API and gets the next response.
+    Sends the conversation history to the OpenRouter API and gets the next response.
     """
     try:
         response = client.chat.completions.create(
+            # Optional: include extra headers for OpenRouter (adjust or remove as needed)
+            extra_headers={
+                "HTTP-Referer": os.getenv("YOUR_SITE_URL", ""),
+                "X-Title": os.getenv("YOUR_SITE_NAME", "")
+            },
+            extra_body={},
             model=MODEL,
             messages=messages,
             temperature=0,
@@ -139,39 +146,32 @@ def main():
         retry_count = 0  # Track retries
 
         while retry_count < MAX_RETRIES:
-            # Interact with ChatGPT
+            # Interact with ChatGPT (via OpenRouter)
             response = interact_with_chatgpt(messages)
             if not response:
                 print(colored("No response from the AI or an error occurred.", "red"))
                 break
 
-            # Check if the AI is asking for clarification
+            # Display the response and check if it's a follow-up question
+            print(colored("\nAI Response:", "cyan", attrs=["bold"]))
+            print(colored(response, "cyan"))
+
             if "?" in response or "clarification" in response.lower():
-                print(colored(f"\n{MODEL}:", "cyan", attrs=["bold"]))
-                print(colored(response, "cyan"))
                 clarification = input(colored("\nYour clarification: ", "blue")).strip()
                 messages.append({"role": "assistant", "content": response})
                 messages.append({"role": "user", "content": clarification})
                 continue  # Continue the loop for further clarification
 
-            # Sanitize the AI response
+            # If the response contains commands, sanitize and process them
             commands = sanitize_command(response)
             if not commands:
                 print(colored("Command could not be sanitized or was blocked.", "red"))
                 break
 
-            # Compare the raw AI response with the sanitized commands
-            raw_response = response.strip()
-            sanitized_response = "\n".join(commands).strip()
-
-            if raw_response != sanitized_response:
-                print(colored(f"\n{MODEL} (raw):", "cyan", attrs=["bold"]))
-                print(colored(raw_response, "cyan"))
-                print(colored("\nProposed sanitized command(s):", "yellow", attrs=["bold"]))
-                print(colored(sanitized_response, "yellow"))
-            else:
-                print(colored("\nCommand(s):", "yellow", attrs=["bold"]))
-                print(colored(sanitized_response, "yellow"))
+            # Show the sanitized commands
+            print(colored("\nProposed command(s):", "yellow", attrs=["bold"]))
+            for c in commands:
+                print(colored(c, "yellow"))
 
             # Check for dangerous keywords
             if not is_command_safe(commands):
@@ -181,7 +181,7 @@ def main():
                     print(colored("Command canceled.", "red", attrs=["bold"]))
                     break
 
-            # Final confirmation before execution
+            # Final confirmation
             proceed = input(colored("Do you want to run these commands? (y/n): ", "blue")).strip().lower()
             if proceed == 'y':
                 output, errors = run_command(commands)
@@ -189,6 +189,7 @@ def main():
                 if errors and AUTO_RETRY_ERRORS:
                     retry_count += 1
                     print(colored(f"\nRetrying... (Attempt {retry_count}/{MAX_RETRIES})", "yellow"))
+
                     # Feed the error message back to ChatGPT
                     messages.append({"role": "assistant", "content": response})
                     messages.append({"role": "user", "content": f"The command failed with this error:\n{errors}\nPlease correct it and provide a new command."})
