@@ -1,4 +1,4 @@
 .env
 /venv
 /build
-/dist/*
+/dist/exe.app/Contents/*
