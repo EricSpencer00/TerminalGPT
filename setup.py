@@ -7,7 +7,7 @@ Usage:
 
 from setuptools import setup
 
-APP = ['exe.py']
+APP = ['terminal.py']
 DATA_FILES = []
 OPTIONS = {}
 
