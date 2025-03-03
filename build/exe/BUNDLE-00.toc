@@ -1,3 +1,0 @@
-([('exe',
-   '/Users/ericspencer/Documents/GitHub/Q/TerminalGPT/dist/exe',
-   'EXECUTABLE')],)

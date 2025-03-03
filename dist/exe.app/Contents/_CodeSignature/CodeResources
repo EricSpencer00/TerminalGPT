@@ -4,18 +4,72 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Resources/icon-windowed.icns</key>
+		<key>Resources/__boot__.py</key>
 		<data>
-		eEHOuYpZLB0vKGVIWGZOh5rH8+o=
+		2SWob+FwKn+KlQ/bSiY6JPrBkE8=
+		</data>
+		<key>Resources/__error__.sh</key>
+		<data>
+		jiMXHe2/gGu9p3+O3RpqVGbONRE=
+		</data>
+		<key>Resources/site.py</key>
+		<data>
+		hVOAaI28CXHytfoByVdYfNDxy9k=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Resources/icon-windowed.icns</key>
+		<key>MacOS/python</key>
 		<dict>
+			<key>symlink</key>
+			<string>/Users/ericspencer/GitHub/TerminalGPT/venv/bin/python</string>
+		</dict>
+		<key>Resources/PythonApplet.icns</key>
+		<dict>
+			<key>symlink</key>
+			<string>/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/Resources/PythonApplet.icns</string>
+		</dict>
+		<key>Resources/__boot__.py</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			2SWob+FwKn+KlQ/bSiY6JPrBkE8=
+			</data>
 			<key>hash2</key>
 			<data>
-			uQo7VuWRab4Phv4EEGmfQsyqFqDIXZgO8OtgaAMvCzY=
+			jNmaL3PobuZX1QbkXzzlJ1Fp8AMhVI/b/WyOMjIOY5E=
+			</data>
+		</dict>
+		<key>Resources/__error__.sh</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			jiMXHe2/gGu9p3+O3RpqVGbONRE=
+			</data>
+			<key>hash2</key>
+			<data>
+			X92yvDN0TrSkH2FT7nqBEm6WgAZJ9CS2MXV1a7IpE4o=
+			</data>
+		</dict>
+		<key>Resources/lib/python3.9/config</key>
+		<dict>
+			<key>symlink</key>
+			<string>/Users/ericspencer/GitHub/TerminalGPT/venv/lib/python3.9/config</string>
+		</dict>
+		<key>Resources/lib/python3.9/site.pyc</key>
+		<dict>
+			<key>symlink</key>
+			<string>../../site.pyc</string>
+		</dict>
+		<key>Resources/site.py</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			hVOAaI28CXHytfoByVdYfNDxy9k=
+			</data>
+			<key>hash2</key>
+			<data>
+			OJjuwoQlOOy9eI1StcNkpXbaXSFT4KM6Uyhwn22JYHk=
 			</data>
 		</dict>
 	</dict>
