@@ -58,7 +58,7 @@ This installs the latest version of Python 3 along with pip, Python's package in
 Choose a directory (for example, your Desktop) and run:
 ```bash
 cd ~/Desktop
-git clone https://github.com/YourUsername/TerminalGPT.git
+git clone https://github.com/EricSpencer00/TerminalGPT.git
 cd TerminalGPT
 ```
 
